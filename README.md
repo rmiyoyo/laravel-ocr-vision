@@ -1,61 +1,152 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel OCR Vision
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel application for Optical Character Recognition (OCR) processing with text editing capabilities. This application allows users to upload documents and images, extracts text using OCR technology, and provides an interface to edit and save the extracted text.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Multi-format Support**: Process PDF, PNG, JPG, and JPEG files
+- **Drag & Drop Interface**: User-friendly file upload experience
+- **OCR Processing**: Integration with OCR.space API for accurate text extraction
+- **Rich Text Editing**: TinyMCE integration for text editing and formatting
+- **File Management**: Stores original files and processed results
+- **Responsive Design**: Works on desktop and mobile devices
+- **Status Tracking**: Monitor processing status of each upload
+- **API Integration**: Easy to extend with other OCR services
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.0 or higher
+- Laravel 9.x or higher
+- Composer
+- MySQL or other supported database
+- OCR.space API key (free tier available)
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/laravel-ocr-vision.git
+   cd laravel-ocr-vision
+   ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Install dependencies:
+   ```bash
+   composer install
+   ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Create and configure the `.env` file:
+   ```bash
+   cp .env.example .env
+   ```
 
-## Laravel Sponsors
+4. Generate application key:
+   ```bash
+   php artisan key:generate
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5. Configure database settings in `.env`:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=laravel_ocr
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-### Premium Partners
+6. Add your OCR.space API key to `.env`:
+   ```env
+   OCR_SPACE_API_KEY=your_api_key_here
+   ```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+7. Run migrations:
+   ```bash
+   php artisan migrate
+   ```
+
+8. Create storage link:
+   ```bash
+   php artisan storage:link
+   ```
+
+9. (Optional) Install frontend dependencies:
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+10. Start the development server:
+    ```bash
+    php artisan serve
+    ```
+
+## Usage
+
+1. Access the application in your browser (default: http://localhost:8000)
+2. Upload a file using the drag & drop interface or file browser
+3. Wait for the OCR processing to complete
+4. View and edit the extracted text using the rich text editor
+5. Save your changes with the "Save Changes" button
+
+## API Integration
+
+The application currently uses the [OCR.space](https://ocr.space/) API for text recognition. You can obtain a free API key from their website.
+
+To configure or change the OCR service:
+
+1. Modify the `OCRService` class in `app/Services/OCRService.php`
+2. Update the API endpoint and parameters as needed
+3. Add your API key to the `.env` file
+
+## Configuration
+
+Key configuration options in `.env`:
+
+```env
+# File upload settings
+UPLOAD_MAX_FILESIZE=5120 # in KB (5MB)
+ALLOWED_FILE_TYPES=pdf,png,jpg,jpeg
+
+# OCR Settings
+OCR_SPACE_API_KEY=your_api_key
+OCR_LANGUAGE=eng
+OCR_DETECT_ORIENTATION=true
+OCR_SCALE=true
+```
+
+## Customization
+
+### Views
+All frontend views are located in `resources/views/ocr/`. You can modify these to change the application's appearance.
+
+### Processing Logic
+The OCR processing logic is contained in `app/Services/OCRService.php`. 
+
+### Validation
+File upload validation rules can be modified in `app/Http/Requests/FileUploadRequest.php`.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! Please follow these steps:
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+1. Fork the repository
+2. Create a new branch for your feature
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source software licensed under the [MIT license](./LICENSE).
+
+## Credits
+
+- [Laravel](https://laravel.com)
+- [OCR.space](https://ocr.space/)
+- [TinyMCE](https://www.tiny.cloud/)
+- [Bootstrap](https://getbootstrap.com/)
+- [Font Awesome](https://fontawesome.com/)
+
+---
+
+For support or questions, please open an issue on the GitHub repository.
